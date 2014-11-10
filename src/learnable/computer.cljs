@@ -64,7 +64,7 @@
     om/IRenderState
     (render-state [_ {:keys [input-queue interrupt control]}]
 
-      (dom/div #js {}
+      (dom/div nil
         (when (machine/running? (:process computer))
               (om/build clock/vcomponent
                         (:hz computer)

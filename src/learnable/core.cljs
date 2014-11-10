@@ -7,9 +7,8 @@
 (enable-console-print!)
 
 (def systemx (computer/assemble-grid-computer 16 16 2))
-(def game snake/program)
 
-(def app-state (atom (computer/run-program systemx game)))
+(def app-state (atom (computer/run-program systemx snake/snake-program)))
 
 (om/root
   computer/vcomponent
