@@ -67,8 +67,7 @@
 
       (dom/div nil
         (om/build clock/vcomponent
-                  {:hz (:hz computer)
-                   :process (:process computer)}
+                  computer
                   {:init-state {:input-queue input-queue}})
 
         (dom/div #js {:onKeyDown (keyboard/controller input-queue interrupt)

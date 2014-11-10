@@ -18,44 +18,58 @@
     (dec hz)
     (/ hz 2)))
 
-(defn set-indicator-color! [owner color]
-  (om/set-state! owner :indicator color))
-
 (defn vtimer [hz owner]
   (reify
-    om/IInitState
-    (init-state [_]
-      {:indicator ""})
-
-    om/IWillMount
+    IWillMount
     (will-mount [_]
-      (let [input-queue (om/get-state owner :input-queue)]
-        (om/update-state!
-              owner
-              :timer
+      (om/set-state!
+        owner
+        :timer
+        (js/setInterval
               (fn []
-                (js/setInterval
-                  (fn []
-                    (put! input-queue :clock-tick)
-                    (set-indicator-color! owner "red")
-                    (js/setTimeout (fn [e] set-indicator-color! owner "black") 5))
-                  (* 1000 (/ 1.0 hz)))))))
+                (put! om/get-state owner :wire "red")
+                (js/setTimeout (fn []
+                                 (put! om/get-state owner :wire "black"))
+                               30))
+              (* 1000 (/ 1.0 hz)))))
 
-    om/IWillUnmount
+    IWillUnmount
     (will-unmount [_]
       (js/clearInterval (om/get-state owner :timer)))
 
-    om/IRenderState
-    (render-state [_ state]
-      (dom/div #js {:className (str "clock-indicator "
-                                    (:indicator state))}))))
+    IRenderState
+    (render-state [_ _] (dom/span nil))))
 
-(defn vcomponent [clock owner]
+(defn vclock [computer owner]
   (reify
-    om/IRenderState
+    IInitState
+    (init-state [_]
+      {:wire (chan)
+       :indicator "black"})
+
+    IWillMount
+    (will-mount [_]
+      (go
+        (loop []
+          (let [color (<! om/get-state owner :wire)]
+            (when (= color "red")
+              (put! (om/get-state owner :input-queue) :clock-tick))
+            (om/set-state! owner :indicator color)
+            (recur)))))
+
+    IRenderState
     (render-state [_ state]
       (dom/div #js {:className "computer-clock"}
-               (dom/div #js {:className "clock-speed"} (:hz clock))
-               (dom/div #js {:className "clock-bulb"}
-                  (when (proc/running? (:process clock))
-                    (om/build vtimer (:hz clock) {:init-state state})))))))
+               (dom/div #js {:className "clock-speed"} (:hz computer))
+               (dom/div #js {:className (str "clock-bulb " (:indicator state))})
+               (when (proc/running? (:process computer))
+                 (om/build vtimer
+                           (:hz computer)
+                           {:init-state {:wire (:wire state)}}))))))
+
+
+
+
+
+
+
