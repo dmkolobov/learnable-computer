@@ -17,7 +17,17 @@
     (dec hz)
     (/ hz 2)))
 
-(defn vcomponent [hz owner]
+(defn blink-indicator [owner]
+  (om/update-state!
+    owner
+    :indicator
+    (fn [indicator]
+      )))
+
+(defn set-indicator-color! [owner color]
+  (om/update-state! owner :indicator "red"))
+
+(defn vtimer [hz owner]
   (reify
     om/IWillMount
     (will-mount [_]
@@ -26,16 +36,28 @@
               owner
               :timer
               (fn []
-                (println "mounting clock")
-                (js/setInterval (fn [] (put! input-queue :clock-tick))
-                                (* 1000 (/ 1.0 hz)))))))
+                (js/setInterval
+                  (fn []
+                    (put! input-queue :clock-tick)
+                    (set-indicator-color! owner "red")
+                    (js/setTimeout (fn [e] set-indicator-color! owner "") 20))
+                  (* 1000 (/ 1.0 hz)))))))
 
     om/IWillUnmount
     (will-unmount [_]
-      (println "unmounting clock")
       (js/clearInterval (om/get-state owner :timer)))
 
     om/IRenderState
     (render-state [_ state]
-      (dom/span #js {:className "computer-clock"}
-                hz))))
+      (dom/div #js {:className (str "clock-indicator "
+                                    (:indicator states))}))))
+
+(defn vcomponent [clock owner]
+  (reify
+    om/IRenderState
+    (render-state [_ state]
+      (dom/div #js {:className "computer-clock"}
+               (dom/div #js {:className "clock-speed"} hz)
+               (dom/div #js {:className "clock-bulb"}
+                  (when (running? (:process clock))
+                    (om/build vtimer (:hz clock) {:init-state state})))))))

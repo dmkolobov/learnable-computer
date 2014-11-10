@@ -55,7 +55,6 @@
           (recur))))
       (go (loop []
         (let [atime (<! (om/get-state owner :control))]
-          (println (str "rewinding to " atime))
           (om/transact! computer :process (fn [p] (proc/rewind p atime)))
           (recur))))
       (js/setTimeout
@@ -67,10 +66,10 @@
     (render-state [_ {:keys [input-queue interrupt control]}]
 
       (dom/div nil
-        (when (proc/running? (:process computer))
-              (om/build clock/vcomponent
-                        (:hz computer)
-                        {:init-state {:input-queue input-queue}}))
+        (om/build clock/vcomponent
+                  {:hz (:hz computer)
+                   :process (:process computer)}
+                  {:init-state {:input-queue input-queue}})
 
         (dom/div #js {:onKeyDown (keyboard/controller input-queue interrupt)
                       :tabIndex "0"
