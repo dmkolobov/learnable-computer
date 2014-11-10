@@ -74,8 +74,8 @@
 (def snake-program
   {:boot
     (fn [screen]
-      {:world-w (width screen)
-       :world-h (height screen)
+      {:world-w (display/width screen)
+       :world-h (display/height screen)
        :snake [[2 2]]
        :food [[4 1] [2 0] [4 7] [6 3]]
        :energy 0

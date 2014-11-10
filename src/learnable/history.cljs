@@ -5,7 +5,7 @@
 
 (defn vcomponent [log owner]
   (reify
-    IRenderState
+    om/IRenderState
     (render-state [_ {:keys [control]}]
       (apply
         dom/ul
