@@ -41,6 +41,6 @@
            #js {:className "computer-screen"}
            (map (fn [line]
                   (apply dom/div
-                         #js {:className "scan-line"
-                         (map render-pixel line)}))))))
+                         #js {:className "scan-line"}
+                         (map render-pixel line)))))))
 
