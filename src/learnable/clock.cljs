@@ -23,6 +23,10 @@
 
 (defn vtimer [hz owner]
   (reify
+    om/IInitState
+    (init-state [_]
+      {:indicator ""})
+
     om/IWillMount
     (will-mount [_]
       (let [input-queue (om/get-state owner :input-queue)]
@@ -34,7 +38,7 @@
                   (fn []
                     (put! input-queue :clock-tick)
                     (set-indicator-color! owner "red")
-                    (js/setTimeout (fn [e] set-indicator-color! owner "") 20))
+                    (js/setTimeout (fn [e] set-indicator-color! owner "black") 5))
                   (* 1000 (/ 1.0 hz)))))))
 
     om/IWillUnmount
