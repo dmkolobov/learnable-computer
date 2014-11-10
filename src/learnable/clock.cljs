@@ -30,7 +30,7 @@
               (fn []
                 (put! (om/get-state owner :wire) "red")
                 (js/setTimeout (fn []
-                                 (put! om/get-state owner :wire "black"))
+                                 (put! (om/get-state owner :wire) "black"))
                                30))
               (* 1000 (/ 1.0 hz)))))
 
