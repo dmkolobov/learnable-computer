@@ -9,6 +9,8 @@
             [cljs.core.async :as async :refer [chan put! <!]])
   (:require-macros [cljs.core.async.macros :as async-mac :refer [go]]))
 
+(enable-console-print!)
+
 (defn assemble-grid-computer [screen-width screen-height hz]
   {:screen (display/grid-screen screen-width screen-height :black)
    :hz hz})
