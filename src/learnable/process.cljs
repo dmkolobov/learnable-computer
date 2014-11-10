@@ -22,7 +22,7 @@
 (defn restore-history [history t atime]
   (reduce t
           (:start-state history)
-          (subvec (:log history) atime)))
+          (subvec (:log history) (inc atime))))
 
 (defn transition [process input]
   (let [{:keys [transition state history]} process]
