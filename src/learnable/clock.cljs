@@ -3,12 +3,16 @@
             [om.dom :as dom :include-macros true]
             [cljs.core.async :as async :refer [put!]]))
 
+(enable-console-print!)
+
 (defn overclock [hz]
+  (println (str "overclocking! hz: " hz))
   (if (< hz 1)
     (* 2 hz)
     (inc hz)))
 
 (defn throttle [hz]
+  (println (str "throttling! hz: " hz))
   (if (> hz 1)
     (dec hz)
     (/ hz 2)))
