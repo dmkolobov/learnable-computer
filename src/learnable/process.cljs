@@ -45,5 +45,5 @@
 (defn halted? [process]
   (= :halted (:status process)))
 
-(defn running? [this]
+(defn running? [process]
   (= :running (:status process)))

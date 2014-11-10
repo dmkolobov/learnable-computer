@@ -17,8 +17,8 @@
   (assoc computer :process (proc/launch program (:screen computer))))
 
 (defn get-frame [computer]
-  (let [{:keys [screen ps]} computer]
-    ((:draw ps) screen (:state ps))))
+  (let [{:keys [screen process]} computer]
+    ((:draw process) screen (:state process))))
 
 (defn on-input [computer-cursor input]
   (when (= :running (deref (get-in computer-cursor [:process :status])))
