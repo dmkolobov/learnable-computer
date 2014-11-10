@@ -2,7 +2,8 @@
   (:require [learnable.process :as proc]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [cljs.core.async :as async :refer [put!]]))
+            [cljs.core.async :as async :refer [put! chan <!]])
+  (:require-macros [cljs.core.async.macros :as async-mac :refer [go]]))
 
 (enable-console-print!)
 
@@ -20,7 +21,7 @@
 
 (defn vtimer [hz owner]
   (reify
-    IWillMount
+    om/IWillMount
     (will-mount [_]
       (om/set-state!
         owner
@@ -33,21 +34,21 @@
                                30))
               (* 1000 (/ 1.0 hz)))))
 
-    IWillUnmount
+    om/IWillUnmount
     (will-unmount [_]
       (js/clearInterval (om/get-state owner :timer)))
 
-    IRenderState
+    om/IRenderState
     (render-state [_ _] (dom/span nil))))
 
 (defn vclock [computer owner]
   (reify
-    IInitState
+    om/IInitState
     (init-state [_]
       {:wire (chan)
        :indicator "black"})
 
-    IWillMount
+    om/IWillMount
     (will-mount [_]
       (go
         (loop []
@@ -57,7 +58,7 @@
             (om/set-state! owner :indicator color)
             (recur)))))
 
-    IRenderState
+    om/IRenderState
     (render-state [_ state]
       (dom/div #js {:className "computer-clock"}
                (dom/div #js {:className "clock-speed"} (:hz computer))
