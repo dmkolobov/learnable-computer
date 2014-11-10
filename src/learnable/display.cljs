@@ -21,7 +21,7 @@
       (assoc matrix [y x] color))))
 
 (defn grid-screen [width height pixel]
-  (vec (repeat height (vec (repeat width pixel)))))
+  (GridScreen. (vec (repeat height (vec (repeat width pixel))))))
 
 (defn parse-color [pixel]
   (condp = pixel

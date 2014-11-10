@@ -46,7 +46,7 @@
               start-state
               (fn [state input]
                 (let [t (if (= input :clock-tick)
-                          (fn [_] on-clock)
+                          (fn [state _] (on-clock state))
                           on-keyboard)]
                   (t state input)))
               {:log [] :start-state start-state :now 0})))
