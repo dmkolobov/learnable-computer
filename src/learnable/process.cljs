@@ -12,7 +12,7 @@
           (:start-state history)
           (subvec (:log history) atime)))
 
-(defrecord Process [status state ptransition history]
+(defrecord Process [draw status state ptransition history]
   machine/StateMachine
   (transition [this input]
     (assoc this
@@ -43,6 +43,7 @@
   (let [start-state ((:boot program) screen)
         {:keys [on-clock on-keyboard]} (:transitions program)]
     (Process. :halted
+              (:draw program)
               start-state
               (fn [state input]
                 (let [t (if (= input :clock-tick)

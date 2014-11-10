@@ -1,5 +1,4 @@
-(ns learnable.computer
-  (:require-macros [cljs.core.async.macros :as async.macros :refer [go]])
+(ns learnable.vcomputer
   (:require [learnable.display :as display]
             [learnable.machine :as machine]
             [learnable.clock :as clock]
@@ -8,7 +7,8 @@
             [learnable.history :as history]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [cljs.core.async :as async :refer [chan put! <!]]))
+            [cljs.core.async :as async :refer [chan put! <!]])
+  (:require-macros [cljs.core.async.macros :as async-mac :refer [go]]))
 
 (defn assemble-grid-computer [screen-width screen-height hz]
   {:screen (display/grid-screen screen-width screen-height :black)
@@ -18,8 +18,8 @@
   (assoc computer :process (proc/launch program (:screen computer))))
 
 (defn get-frame [computer]
-  (let [{:keys [screen process]} computer]
-    ((:draw process) screen (:state process))))
+  (let [{:keys [screen ps]} computer]
+    ((:draw ps) screen (:state ps))))
 
 (defn on-input [computer-cursor input]
   (when (= :running (deref (get-in computer-cursor [:process :status])))
