@@ -35,7 +35,7 @@
                   (js/setTimeout (fn []
                                    (put! (om/get-state owner :wire) 0))
                                  (/ wavelength 2)))
-                wavelength)))))
+                wavelength))))
 
     om/IWillUnmount
     (will-unmount [_]
