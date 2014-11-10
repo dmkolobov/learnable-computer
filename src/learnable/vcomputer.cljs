@@ -53,6 +53,7 @@
           (recur))))
       (go (loop []
         (let [atime (<! (om/get-state owner :control))]
+          (println (str "rewinding to " atime))
           (om/transact! computer :process (fn [p] (proc/rewind p atime)))
           (recur))))
       (js/setTimeout
