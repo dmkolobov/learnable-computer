@@ -14,7 +14,7 @@
                   (let [input (log atime)]
                     (cons (dom/li
                             #js {:onClick (fn [e] (put! control atime))}
-                            input)
+                            (str input))
                           timeline)))
                 (list)
                 (range (count log)))))))
