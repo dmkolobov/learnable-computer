@@ -9,7 +9,7 @@
 (defn draw [screen state]
   (let [{:keys [food snake]} state]
     (reduce (partial display/draw-pixel :red)
-            (reduce (partial display/display/draw-pixel :green)
+            (reduce (partial display/draw-pixel :green)
                     screen
                     snake)
             food)))
