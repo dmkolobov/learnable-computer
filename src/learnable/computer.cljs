@@ -21,18 +21,18 @@
   (let [{:keys [screen process]} computer]
     ((:draw process) screen (:state process))))
 
-(defn on-input! [computer! input]
-  (when (= :running (deref (get-in computer! [:process :status])))
-    (om/transact! computer!
+(defn on-input [computer-cursor input]
+  (when (= :running (deref (get-in computer-cursor [:process :status])))
+    (om/transact! computer-cursor
                   :process
                   (fn [process] (machine/transition process input)))))
 
-(defn on-signal! [computer! signal]
+(defn on-signal [computer-cursor signal]
   (condp = signal
-         :halt (om/transact! computer! :process machine/halt)
-         :resume (om/transact! computer! :process machine/resume)
-         :overclock (om/transact! computer! :hz clock/overclock))
-         :throttle (om/transact! computer! :hz clock/throttle))
+         :halt (om/transact! computer-cursor :process machine/halt)
+         :resume (om/transact! computer-cursor :process machine/resume)
+         :overclock (om/transact! computer-cursor :hz clock/overclock))
+         :throttle (om/transact! computer-cursor :hz clock/throttle))
 
 (defn vcomponent [computer owner]
   (reify
@@ -46,11 +46,11 @@
     (will-mount [_]
       (go (loop []
         (let [signal (<! (om/get-state owner :interrupt))]
-          (on-signal! computer signal)
+          (on-signal computer signal)
           (recur))))
       (go (loop []
         (let [input (<! (om/get-state owner :input-queue))]
-          (on-input! computer input)
+          (on-input computer input)
           (recur))))
       (go (loop []
         (let [atime (<! (om/get-state owner :control))]
