@@ -18,15 +18,8 @@
     (dec hz)
     (/ hz 2)))
 
-(defn blink-indicator [owner]
-  (om/update-state!
-    owner
-    :indicator
-    (fn [indicator]
-      )))
-
 (defn set-indicator-color! [owner color]
-  (om/update-state! owner :indicator "red"))
+  (om/set-state! owner :indicator "red"))
 
 (defn vtimer [hz owner]
   (reify
