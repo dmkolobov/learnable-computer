@@ -31,4 +31,5 @@
 
     om/IRenderState
     (render-state [_ state]
-      (dom/span #js {:className "computer-clock"}))))
+      (dom/span #js {:className "computer-clock"}
+                hz))))

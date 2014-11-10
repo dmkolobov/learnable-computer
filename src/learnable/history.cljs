@@ -13,8 +13,10 @@
         (reduce (fn [timeline atime]
                   (let [input (log atime)]
                     (cons (dom/li
-                            #js {:onClick (fn [e] (put! control atime))}
-                            (str input))
+                            nil
+                            (dom/a #js {:onClick (fn [e] (put! control atime))}
+                                   (dom/span #js {:className "time-index"})
+                                   (str input)))
                           timeline)))
                 (list)
                 (range (count log)))))))
