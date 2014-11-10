@@ -70,7 +70,7 @@
                         {:init-state {:input-queue input-queue}}))
 
         (dom/div #js {:onKeyDown (keyboard/controller computer)
-                      :tabStop 0
+                      :tabIndex "0"
                       :className "computer"}
           (om/build display/vcomponent (get-frame computer)))
 
