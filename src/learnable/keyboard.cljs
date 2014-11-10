@@ -25,7 +25,7 @@
   (last (find key-bindings ks)))
 
 (defn controller [computer]
-  (let [{:keys [input-queue interrupt] computer}]
+  (let [{:keys [input-queue interrupt]} computer]
     (fn [e]
       (let [ks (keyboard/parse e)]
         (if (is-key-binding? ks)

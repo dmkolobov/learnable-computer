@@ -41,7 +41,7 @@
 
 (defn launch [program screen]
   (let [start-state ((:boot program) screen)
-        {:keys [on-clock on-keyboard] (:transitions program)}]
+        {:keys [on-clock on-keyboard]} (:transitions program)]
     (Process. :halted
               state
               (fn [state input]
