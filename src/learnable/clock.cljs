@@ -52,7 +52,7 @@
     (will-mount [_]
       (go
         (loop []
-          (let [color (<! om/get-state owner :wire)]
+          (let [color (<! (om/get-state owner :wire))]
             (when (= color "red")
               (put! (om/get-state owner :input-queue) :clock-tick))
             (om/set-state! owner :indicator color)
