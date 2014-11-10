@@ -29,7 +29,8 @@
                 direction
                 status]} state
         head (last snake)
-        front (translate head direction)]
+        front (translate head direction)
+        is-front? (fn [x] (= front x))]
     (cond (some is-front? food)
             (assoc state
                    :snake (concat (rest snake) (list front))
