@@ -19,7 +19,7 @@
     (/ hz 2)))
 
 (defn set-indicator-color! [owner color]
-  (om/set-state! owner :indicator "red"))
+  (om/set-state! owner :indicator color))
 
 (defn vtimer [hz owner]
   (reify
