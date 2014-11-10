@@ -6,7 +6,7 @@
 
 (defmulti width screen-dispatch)
 (defmulti height screen-dispatch)
-(defmulti draw-pixel (fn [x & others] (screen-dispatch others)))
+(defmulti draw-pixel screen-dispatch)
 (defmulti vcomponent screen-dispatch)
 
 (defn grid-screen [width height pixel]
@@ -20,7 +20,7 @@
 (defmethod height :grid-screen [screen]
   (count (:matrix screen)))
 
-(defmethod draw-pixel :grid-screen [value screen point]
+(defmethod draw-pixel :grid-screen [screen point value]
   (let [[x y] point]
     (assoc-in screen [:matrix y x] value)))
 
