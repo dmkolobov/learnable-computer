@@ -34,13 +34,13 @@
 
 (defn vcomponent [computer owner]
   (reify
-    IInitState
+    om/IInitState
     (init-state [_]
       {:input-queue (chan)
        :interrupt (chan)
        :control (chan)})
 
-    IWillMount
+    om/IWillMount
     (will-mount [_]
       (go (loop []
         (let [signal (<! (om/get-state owner :interrupt))]
@@ -59,7 +59,7 @@
           (put! (om/get-state owner :interrupt) :resume))
         1000))
 
-    IRenderState
+    om/IRenderState
     (render-state [_ {:keys [input-queue interrupt control]}]
 
       (dom/div #js {}

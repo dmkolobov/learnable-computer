@@ -15,7 +15,7 @@
 
 (defn vcomponent [hz owner]
   (reify
-    IWillMount
+    om/IWillMount
     (will-mount [_]
       (let [input-queue (om/get-state owner :input-queue)]
         (om/update-state!
@@ -24,10 +24,10 @@
               (js/setInterval (fn [] (put! input-queue :clock-tick))
                               (* 1000 (/ 1.0 @hz))))))
 
-    IWillUnmount
+    om/IWillUnmount
     (will-unmount [_]
       (js/clearInterval (om/get-state owner :timer)))
 
-    IRenderState
+    om/IRenderState
     (render-state [_ state]
       (dom/span #js {:className "computer-clock"}))))

@@ -35,12 +35,13 @@
   (dom/div #js {:className (str "pixel " (parse-color pixel))} " "))
 
 (defn vcomponent [screen owner]
-  IRender
-  (render [_]
-    (apply dom/div
-           #js {:className "computer-screen"}
-           (map (fn [line]
-                  (apply dom/div
-                         #js {:className "scan-line"}
-                         (map render-pixel line)))))))
+  (reify
+    om/IRender
+    (render [_]
+      (apply dom/div
+             #js {:className "computer-screen"}
+             (map (fn [line]
+                    (apply dom/div
+                           #js {:className "scan-line"}
+                           (map render-pixel line))))))))
 
