@@ -1,7 +1,7 @@
 (ns learnable.keyboard
   (:require [cljs.core.async :as async :refer [put!]]))
 
-(defn parse [e]
+(defn parse-keystroke [e]
   (condp = (.-keyCode e)
          0 :key-up
          0 :key-right
@@ -27,7 +27,7 @@
 (defn controller [computer]
   (let [{:keys [input-queue interrupt]} computer]
     (fn [e]
-      (let [ks (parse e)]
+      (let [ks (parse-keystroke e)]
         (if (is-key-binding? ks)
           (put! interrupt (load-key-binding ks))
           (put! input-queue ks))))))

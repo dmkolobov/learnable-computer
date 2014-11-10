@@ -1,4 +1,5 @@
 (ns learnable.computer
+  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [learnable.display :as display]
             [learnable.machine :as machine]
             [learnable.clock :as clock]
@@ -7,8 +8,7 @@
             [learnable.history :as history]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [cljs.core.async :as async :refer [chan put! <!]])
-  (:require-macros [cljs.core.async.macros :refer [go]]))
+            [cljs.core.async :as async :refer [chan put! <!]]))
 
 (defn assemble-grid-computer [screen-width screen-height hz]
   {:screen (display/grid-screen screen-width screen-height :black)
