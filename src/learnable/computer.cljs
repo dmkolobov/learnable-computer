@@ -1,5 +1,5 @@
 (ns learnable.computer
-  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require-macros [cljs.core.async.macros :as async.macros :refer [go]])
   (:require [learnable.display :as display]
             [learnable.machine :as machine]
             [learnable.clock :as clock]
