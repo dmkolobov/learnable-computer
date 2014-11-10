@@ -3,14 +3,14 @@
 
 (defn parse-keystroke [e]
   (condp = (.-keyCode e)
-         0 :key-up
-         1 :key-right
-         2 :key-down
-         3 :key-left
-         4 :key-esc
-         5 :key-space
-         6 :key-plus
-         7 :key-minus))
+         38 :key-up
+         39 :key-right
+         40 :key-down
+         37 :key-left
+         27 :key-esc
+         32 :key-space
+         187 :key-plus
+         189 :key-minus))
 
 (def key-bindings
   {:key-esc :halt
