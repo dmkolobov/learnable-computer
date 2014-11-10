@@ -21,7 +21,7 @@
     ((:draw process) screen (:state process))))
 
 (defn on-input [computer-cursor input]
-  (when (= :running (deref (get-in computer-cursor [:process :status])))
+  (when (= :running (get-in @computer-cursor [:process :status]))
     (om/transact! computer-cursor
                   :process
                   (fn [process] (proc/transition process input)))))
