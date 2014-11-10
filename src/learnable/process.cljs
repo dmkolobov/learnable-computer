@@ -21,7 +21,7 @@
 
   (rewind [this atime]
     (assoc this
-           :state (restory history ptransition atime)
+           :state (restore history ptransition atime)
            :history (assoc history :now atime)))
 
   (halt [this]
@@ -43,7 +43,7 @@
   (let [start-state ((:boot program) screen)
         {:keys [on-clock on-keyboard]} (:transitions program)]
     (Process. :halted
-              state
+              start-state
               (fn [state input]
                 (let [t (if (= input :clock-tick)
                           (fn [_] on-clock)

@@ -27,7 +27,7 @@
 (defn controller [computer]
   (let [{:keys [input-queue interrupt]} computer]
     (fn [e]
-      (let [ks (keyboard/parse e)]
+      (let [ks (parse e)]
         (if (is-key-binding? ks)
           (put! interrupt (load-key-binding ks))
           (put! input-queue ks))))))

@@ -1,12 +1,14 @@
 (ns learnable.computer
   (:require [learnable.display :as display]
             [learnable.machine :as machine]
+            [learnable.clock :as clock]
             [learnable.process :as proc]
             [learnable.keyboard :as keyboard]
             [learnable.history :as history]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [cljs.core.async :as async :refer [chan put! <!]]))
+            [cljs.core.async :as async :refer [chan put! <!]]
+            [cljs.core.async.macros :refer [go]]))
 
 (defn assemble-grid-computer [screen-width screen-height hz]
   {:screen (display/grid-screen screen-width screen-height :black)
@@ -63,7 +65,7 @@
     (render-state [_ {:keys [input-queue interrupt control]}]
 
       (dom/div #js {}
-        (when (running? (:process computer))
+        (when (machine/running? (:process computer))
               (om/build clock/vcomponent
                         (:hz computer)
                         {:init-state {:input-queue input-queue}}))
@@ -73,7 +75,7 @@
                       :className "computer"}
           (om/build display/vcomponent (get-frame computer)))
 
-        (when (halted? (:process computer))
+        (when (machine/halted? (:process computer))
           (om/build history/vcomponent
                     (get-in computer [:process :history :log])
                     {:init-state {:control control}}))))))
