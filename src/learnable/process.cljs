@@ -33,7 +33,7 @@
 (defn rewind [process atime]
   (let [{:keys [transition history]} process]
     (assoc process
-           :state (restore-history history ptransition atime)
+           :state (restore-history history transition atime)
            :history (assoc history :now atime))))
 
 (defn halt [process]
