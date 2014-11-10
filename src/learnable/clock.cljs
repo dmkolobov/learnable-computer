@@ -26,11 +26,13 @@
               owner
               :timer
               (fn []
+                (println "mounting clock")
                 (js/setInterval (fn [] (put! input-queue :clock-tick))
                                 (* 1000 (/ 1.0 hz)))))))
 
     om/IWillUnmount
     (will-unmount [_]
+      (println "unmounting clock")
       (js/clearInterval (om/get-state owner :timer)))
 
     om/IRenderState
