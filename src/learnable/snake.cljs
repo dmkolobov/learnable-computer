@@ -8,8 +8,8 @@
 
 (defn draw [screen state]
   (let [{:keys [food snake]} state]
-    (reduce (fn [screen food-p] (draw-pixel screen food-p :red))
-            (reduce (fn [screen snake-p] (draw-pixel screen snake-p :green))
+    (reduce (fn [screen food-p] (display/draw-pixel screen food-p :red))
+            (reduce (fn [screen snake-p] (display/draw-pixel screen snake-p :green))
                     screen
                     snake)
             food)))
