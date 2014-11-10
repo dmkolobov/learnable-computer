@@ -14,7 +14,7 @@
 
 (def key-bindings
   {:key-esc :halt
-   :key-space :run
+   :key-space :resume
    :key-plus :overclock
    :key-minus :throttle})
 
