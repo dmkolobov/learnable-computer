@@ -66,7 +66,7 @@
     (render-state [_ {:keys [input-queue interrupt control]}]
 
       (dom/div nil
-        (om/build clock/vcomponent
+        (om/build clock/vclock
                   computer
                   {:init-state {:input-queue input-queue}})
 
