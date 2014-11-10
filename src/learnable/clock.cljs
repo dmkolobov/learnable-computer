@@ -7,14 +7,16 @@
 
 (enable-console-print!)
 
+(defn max-hertz 20)
+
 (defn overclock [hz]
-  (println (str "overclocking! hz: " hz))
-  (if (< hz 1)
-    (* 2 hz)
-    (inc hz)))
+  (if (<= hz max-hertz)
+    (if (< hz 1)
+      (* 2 hz)
+      (inc hz))
+    hz))
 
 (defn throttle [hz]
-  (println (str "throttling! hz: " hz))
   (if (> hz 1)
     (dec hz)
     (/ hz 2)))
@@ -31,7 +33,7 @@
                 (put! (om/get-state owner :wire) "red")
                 (js/setTimeout (fn []
                                  (put! (om/get-state owner :wire) "black"))
-                               30))
+                               45))
               (* 1000 (/ 1.0 hz)))))
 
     om/IWillUnmount
