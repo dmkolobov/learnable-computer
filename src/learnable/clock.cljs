@@ -25,16 +25,17 @@
   (reify
     om/IWillMount
     (will-mount [_]
-      (om/set-state!
-        owner
-        :timer
-        (js/setInterval
-              (fn []
-                (put! (om/get-state owner :wire) "red")
-                (js/setTimeout (fn []
-                                 (put! (om/get-state owner :wire) "black"))
-                               45))
-              (* 1000 (/ 1.0 hz)))))
+      (let [wavelength (* 1000 (/ 1.0 hz))]
+        (om/set-state!
+          owner
+          :timer
+          (js/setInterval
+                (fn []
+                  (put! (om/get-state owner :wire) 1)
+                  (js/setTimeout (fn []
+                                   (put! (om/get-state owner :wire) 0))
+                                 (/ wavelength 2)))
+                wavelength)))))
 
     om/IWillUnmount
     (will-unmount [_]
@@ -54,10 +55,14 @@
     (will-mount [_]
       (go
         (loop []
-          (let [color (<! (om/get-state owner :wire))]
-            (when (= color "red")
+          (let [bit (<! (om/get-state owner :wire))]
+            (when (= bit 1)
               (put! (om/get-state owner :input-queue) :clock-tick))
-            (om/set-state! owner :indicator color)
+            (om/set-state! owner
+                           :indicator
+                           (if (= bit 1)
+                             "red"
+                             "black"))
             (recur)))))
 
     om/IRenderState
