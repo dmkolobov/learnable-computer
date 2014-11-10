@@ -9,15 +9,13 @@
     (render-state [_ {:keys [control]}]
       (apply
         dom/ul
-        #js {:className "computer-history"}
+        #js {:className "computer-history screen"}
         (reduce (fn [timeline atime]
                   (let [input (log atime)]
                     (cons (dom/li
                             nil
                             (dom/a #js {:onClick (fn [e] (put! control atime))}
-                                   (dom/span #js {:className "time-index"}
-                                             atime)
-                                   (str input)))
+                                   (str atime " : "input)))
                           timeline)))
                 (list)
                 (range (count log)))))))

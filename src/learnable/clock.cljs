@@ -68,7 +68,7 @@
     om/IRenderState
     (render-state [_ state]
       (dom/div #js {:className "computer-clock"}
-               (dom/div #js {:className "clock-speed"} (:hz computer))
+               (dom/div #js {:className "clock-speed screen"} (:hz computer))
                (dom/div #js {:className (str "clock-bulb " (:indicator state))})
                (when (proc/running? (:process computer))
                  (om/build vtimer

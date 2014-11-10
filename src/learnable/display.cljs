@@ -40,7 +40,7 @@
     om/IRender
     (render [_]
       (apply dom/div
-             #js {:className "computer-screen"}
+             #js {:className "computer-screen screen"}
              (map (fn [line]
                     (apply dom/div
                            #js {:className "scan-line"}
