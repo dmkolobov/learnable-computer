@@ -2,26 +2,27 @@
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
-(defprotocol Screen
-  "A screen abstraction that provides basic drawing facilities."
-  (width [this] "Find the width of the screen.")
-  (height [this] "Find the height of the screen.")
-  (draw-pixel [this point color] "Draw a pixel on the screen."))
+(defn screen-dispatch [x & rest] (:screen-type x))
 
-(defrecord GridScreen [matrix]
-  Screen
-  (width [this]
-    (count (first matrix)))
-
-  (height [this]
-    (count matrix))
-
-  (draw-pixel [this point color]
-    (let [[x y] point]
-      (assoc matrix [y x] color))))
+(defmulti width screen-dispatch)
+(defmulti height screen-dispatch)
+(defmulti draw-pixel screen-dispatch)
+(defmulti vcomponent screen-dispatch)
 
 (defn grid-screen [width height pixel]
-  (GridScreen. (vec (repeat height (vec (repeat width pixel))))))
+  {:screen-type :grid-screen
+   :matrix (vec (repeat height (vec (repeat width pixel))))})
+
+
+(defmethod width :grid-screen [screen]
+  (count (first (:matrix screen))))
+
+(defmethod height :grid-screen [screen]
+  (count (:matrix screen)))
+
+(defmethod draw-pixel :grid-screen [screen value]
+  (let [[x y] point]
+    (assoc-in screen [:matrix y x] value)))
 
 (defn parse-color [pixel]
   (condp = pixel
@@ -34,7 +35,7 @@
 (defn render-pixel [pixel]
   (dom/div #js {:className (str "pixel " (parse-color pixel))} " "))
 
-(defn vcomponent [screen owner]
+(defmethod vcomponent :grid-screen [screen owner]
   (reify
     om/IRender
     (render [_]

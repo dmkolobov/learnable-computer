@@ -1,53 +1,49 @@
-(ns learnable.process
-  (:require [learnable.machine :as machine]))
+(ns learnable.process)
 
-(defn commit [history input]
+(defn launch [program screen]
+  (let [start-state ((:boot program) screen)
+        {:keys [on-clock on-keyboard]} (:transitions program)]
+    {:status :halted
+     :draw (:draw program)
+     :state start-state
+     :transition (fn [state input]
+                   (let [t (if (= :clock-tick input)
+                             (fn [state _] (on-clock state))
+                             on-keyboard)]
+                     (t state input)))
+     :history {:log [] :start-state start-state :now 0}}))
+
+(defn commit-history [history input]
   (let [{:keys [log now]} history]
     (assoc history
            :log (conj log input)
            :now (inc now))))
 
-(defn restore [history t atime]
+(defn restore-history [history t atime]
   (reduce t
           (:start-state history)
           (subvec (:log history) atime)))
 
-(defrecord Process [draw status state ptransition history]
-  machine/StateMachine
-  (transition [this input]
-    (assoc this
-           :state (ptransition state input)
-           :history (commit history input)))
+(defn transition [process input]
+  (let [{:keys [transition state history]} process]
+    (assoc process
+           :state (transition state input)
+           :history (commit-history history input))))
 
-  (rewind [this atime]
-    (assoc this
-           :state (restore history ptransition atime)
-           :history (assoc history :now atime)))
+(defn rewind [process atime]
+  (let [{:keys [transition history]} process]
+    (assoc process
+           :state (restore-history history ptransition atime)
+           :history (assoc history :now atime))))
 
-  (halt [this]
-    (assoc this :status :halted))
+(defn halt [process]
+  (assoc process :status :halted))
 
-  (resume [this]
-    (assoc this
-           :status :running
-           :history (let [{:keys [log now]} history]
-                      (assoc history :log (subvec log (inc now))))))
+(defn resume [process]
+  (assoc process :status :running))
 
-  (halted? [this]
-    (= status :halted))
+(defn halted? [process]
+  (= :halted (:status process)))
 
-  (running? [this]
-    (= status :running)))
-
-(defn launch [program screen]
-  (let [start-state ((:boot program) screen)
-        {:keys [on-clock on-keyboard]} (:transitions program)]
-    (Process. :halted
-              (:draw program)
-              start-state
-              (fn [state input]
-                (let [t (if (= input :clock-tick)
-                          (fn [state _] (on-clock state))
-                          on-keyboard)]
-                  (t state input)))
-              {:log [] :start-state start-state :now 0})))
+(defn running? [this]
+  (= :running (:status process)))

@@ -1,6 +1,5 @@
 (ns learnable.vcomputer
   (:require [learnable.display :as display]
-            [learnable.machine :as machine]
             [learnable.clock :as clock]
             [learnable.process :as proc]
             [learnable.keyboard :as keyboard]
@@ -25,12 +24,12 @@
   (when (= :running (deref (get-in computer-cursor [:process :status])))
     (om/transact! computer-cursor
                   :process
-                  (fn [process] (machine/transition process input)))))
+                  (fn [process] (proc/transition process input)))))
 
 (defn on-signal [computer-cursor signal]
   (condp = signal
-         :halt (om/transact! computer-cursor :process machine/halt)
-         :resume (om/transact! computer-cursor :process machine/resume)
+         :halt (om/transact! computer-cursor :process proc/halt)
+         :resume (om/transact! computer-cursor :process proc/resume)
          :overclock (om/transact! computer-cursor :hz clock/overclock))
          :throttle (om/transact! computer-cursor :hz clock/throttle))
 
@@ -54,7 +53,7 @@
           (recur))))
       (go (loop []
         (let [atime (<! (om/get-state owner :control))]
-          (om/transact! computer :process (fn [p] (machine/rewind p atime)))
+          (om/transact! computer :process (fn [p] (proc/rewind p atime)))
           (recur))))
       (js/setTimeout
         (fn []
@@ -65,7 +64,7 @@
     (render-state [_ {:keys [input-queue interrupt control]}]
 
       (dom/div nil
-        (when (machine/running? (:process computer))
+        (when (proc/running? (:process computer))
               (om/build clock/vcomponent
                         (:hz computer)
                         {:init-state {:input-queue input-queue}}))
@@ -75,7 +74,7 @@
                       :className "computer"}
           (om/build display/vcomponent (get-frame computer)))
 
-        (when (machine/halted? (:process computer))
+        (when (proc/halted? (:process computer))
           (om/build history/vcomponent
                     (get-in computer [:process :history :log])
                     {:init-state {:control control}}))))))
