@@ -44,5 +44,6 @@
              (map (fn [line]
                     (apply dom/div
                            #js {:className "scan-line"}
-                           (map render-pixel line))))))))
+                           (map render-pixel line)))
+                  (:matrix screen))))))
 
