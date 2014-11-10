@@ -6,7 +6,7 @@
 
 (enable-console-print!)
 
-(def sytemx (computer/assemble-grid-computer 16 16 2))
+(def systemx (computer/assemble-grid-computer 16 16 2))
 (def game snake/program)
 
 (def app-state (atom (computer/run-program systemx game)))
