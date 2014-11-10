@@ -1,5 +1,6 @@
 (ns learnable.clock
-  (:require [om.core :as om :include-macros true]
+  (:require [learnable.process :as proc]
+            [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [cljs.core.async :as async :refer [put!]]))
 
@@ -50,14 +51,14 @@
     om/IRenderState
     (render-state [_ state]
       (dom/div #js {:className (str "clock-indicator "
-                                    (:indicator states))}))))
+                                    (:indicator state))}))))
 
 (defn vcomponent [clock owner]
   (reify
     om/IRenderState
     (render-state [_ state]
       (dom/div #js {:className "computer-clock"}
-               (dom/div #js {:className "clock-speed"} hz)
+               (dom/div #js {:className "clock-speed"} (:hz clock))
                (dom/div #js {:className "clock-bulb"}
-                  (when (running? (:process clock))
+                  (when (proc/running? (:process clock))
                     (om/build vtimer (:hz clock) {:init-state state})))))))
