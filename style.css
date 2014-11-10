@@ -1,0 +1,43 @@
+body {
+    background: #000;
+}
+
+#app {
+    padding: 50px;
+    width: 512px;
+    height: 512px;
+    background: #8A4915;
+    margin: 0 auto 0 auto;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #783C0C;
+}
+
+.computer {
+    width: 512px;
+    height: 512px;
+    background: #222;
+    border-radius: 10px;
+    margin: 0 auto 0 auto;
+    outline: none;
+}
+
+.computer-screen {
+    display: table;
+}
+
+.scan-line {
+    display: table-row;
+}
+
+.pixel {
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: table-cell;
+    width: 32px;
+    height: 32px;
+}
+
+.pixel.green {background: green;}
+.pixel.red {background: red;}
