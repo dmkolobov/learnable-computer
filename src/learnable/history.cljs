@@ -10,10 +10,12 @@
       (apply
         dom/ul
         #js {:className "computer-history"}
-        (reduce-kv (fn [timeline atime input]
-                     (cons (dom/li
-                              #js {:onClick (fn [e] (put! control atime))}
-                              input)
-                           timeline))
-                   (list)
-                   log)))))
+        (reduce (fn [timeline atime]
+                  (let [input (atime log)]
+                    (cons (dom/li
+                            #js {:onClick (fn [e] (put! control atime))}
+                            input)
+                          timeline)))
+                (list)
+                (range (count log)))))))
+
