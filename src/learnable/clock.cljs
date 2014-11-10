@@ -7,7 +7,7 @@
 
 (enable-console-print!)
 
-(defn max-hertz 20)
+(def max-hertz 20)
 
 (defn overclock [hz]
   (if (<= hz max-hertz)
