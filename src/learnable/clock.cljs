@@ -28,7 +28,7 @@
         :timer
         (js/setInterval
               (fn []
-                (put! om/get-state owner :wire "red")
+                (put! (om/get-state owner :wire) "red")
                 (js/setTimeout (fn []
                                  (put! om/get-state owner :wire "black"))
                                30))
