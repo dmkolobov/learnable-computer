@@ -22,7 +22,7 @@
               owner
               :timer
               (js/setInterval (fn [] (put! input-queue :clock-tick))
-                              (* 1000 (/ 1.0 @hz))))))
+                              (* 1000 (/ 1.0 hz))))))
 
     om/IWillUnmount
     (will-unmount [_]
