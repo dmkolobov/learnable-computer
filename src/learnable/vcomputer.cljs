@@ -69,7 +69,7 @@
                         (:hz computer)
                         {:init-state {:input-queue input-queue}}))
 
-        (dom/div #js {:onKeyDown (keyboard/controller computer)
+        (dom/div #js {:onKeyDown (keyboard/controller input-queue interrupt)
                       :tabIndex "0"
                       :className "computer"}
           (om/build display/vcomponent (get-frame computer)))

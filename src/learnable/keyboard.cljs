@@ -24,10 +24,9 @@
 (defn load-key-binding [ks]
   (last (find key-bindings ks)))
 
-(defn controller [computer]
-  (let [{:keys [input-queue interrupt]} computer]
-    (fn [e]
-      (let [ks (parse-keystroke e)]
-        (if (is-key-binding? ks)
-          (put! interrupt (load-key-binding ks))
-          (put! input-queue ks))))))
+(defn controller [input-queue interrupt]
+  (fn [e]
+    (let [ks (parse-keystroke e)]
+      (if (is-key-binding? ks)
+        (put! interrupt (load-key-binding ks))
+        (put! input-queue ks)))))
