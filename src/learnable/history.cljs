@@ -11,7 +11,7 @@
         dom/ul
         #js {:className "computer-history"}
         (reduce (fn [timeline atime]
-                  (let [input (atime log)]
+                  (let [input (log atime)]
                     (cons (dom/li
                             #js {:onClick (fn [e] (put! control atime))}
                             input)
