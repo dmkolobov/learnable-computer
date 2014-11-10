@@ -32,8 +32,8 @@
   (condp = signal
          :halt (om/transact! computer-cursor :process proc/halt)
          :resume (om/transact! computer-cursor :process proc/resume)
-         :overclock (om/transact! computer-cursor :hz clock/overclock))
-         :throttle (om/transact! computer-cursor :hz clock/throttle))
+         :overclock (om/transact! computer-cursor :hz clock/overclock)
+         :throttle (om/transact! computer-cursor :hz clock/throttle)))
 
 (defn vcomponent [computer owner]
   (reify
