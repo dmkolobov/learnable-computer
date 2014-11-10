@@ -15,7 +15,8 @@
                     (cons (dom/li
                             nil
                             (dom/a #js {:onClick (fn [e] (put! control atime))}
-                                   (dom/span #js {:className "time-index"} atime)
+                                   (dom/span #js {:className "time-index"}
+                                             atime)
                                    (str input)))
                           timeline)))
                 (list)

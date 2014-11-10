@@ -19,11 +19,6 @@
            :log (conj log input)
            :now (inc now))))
 
-(defn restore-history [history t atime]
-  (reduce t
-          (:start-state history)
-          (subvec (:log history) (inc atime))))
-
 (defn transition [process input]
   (let [{:keys [transition state history]} process]
     (assoc process
@@ -33,7 +28,9 @@
 (defn rewind [process atime]
   (let [{:keys [transition history]} process]
     (assoc process
-           :state (restore-history history transition atime)
+           :state (reduce transition
+                          (:start-state history)
+                          (subvec (:log history) 0 (inc atime)))
            :history (assoc history :now atime))))
 
 (defn halt [process]
