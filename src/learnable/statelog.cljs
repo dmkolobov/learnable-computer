@@ -45,9 +45,9 @@
           (str atime " : " (entries (dec atime))))))))
 
 (defn log-list [log]
-  (let [{:keys entries} log]
+  (let [{:keys [entries]} log]
     (reduce (fn [timeline atime]
-              (cons [atime (entries atime)] timeline))
+              (cons [atime (entries (dec atime))] timeline))
             (list [0 "start"])
             (range 1 (inc (count entries))))))
 
