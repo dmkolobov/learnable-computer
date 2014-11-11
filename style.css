@@ -41,12 +41,20 @@ body {
     text-shadow: 0px 0px 1px #0C2B06;
 }
 
-.computer-history {
+.inspector {
     width: 300px;
     height: 512px;
     overflow-y: scroll;
     float: left;
     margin: 0 0 0 15px;
+}
+
+.screen hr {
+    margin: 10px 0;
+    border-color: #23B505;
+}
+
+.computer-history {
     list-style-type: none;
 }
 

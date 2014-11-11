@@ -50,7 +50,7 @@
     (render [_]
       (let [log (:log process)]
         (dom/div
-          #js {:className "screen"}
+          #js {:className "screen inspector"}
           (dom/div nil (str "now: " (:now log)))
           (dom/hr nil)
           (when (= :halted (:status process))
