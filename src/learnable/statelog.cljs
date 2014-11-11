@@ -1,6 +1,5 @@
-(ns learnable.state-log
-  (:require [learnable.process :as proc]
-            [om.core :as om :include-macros true]
+(ns learnable.statelog
+  (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [cljs.core.async :as async :refer [put!]]))
 
@@ -54,7 +53,7 @@
           #js {:className "screen"}
           (dom/div nil (str "now: " (:now log)))
           (dom/hr nil)
-          (when (proc/running? process)
+          (when (= :halted (:status process))
             (apply
               dom/ul
               #js {:className "computer-history"}
