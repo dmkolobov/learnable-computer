@@ -1,4 +1,5 @@
-(ns learnable.process)
+(ns learnable.process
+  (:require learnable.state-log :as state-log))
 
 (defn launch [program screen]
   (let [start-state ((:boot program) screen)
@@ -11,42 +12,26 @@
                              (fn [state _] (on-clock state))
                              on-keyboard)]
                      (t state input)))
-     :history {:log [] :start-state start-state :now 0}}))
-
-(defn commit-history [history input]
-  (let [{:keys [log now]} history]
-    (assoc history
-           :log (conj log input)
-           :now (inc now))))
+     :log (state-log/create start-state)}))
 
 (defn transition [process input]
-  (let [{:keys [transition state history]} process]
+  (let [{:keys [transition state log]} process]
     (assoc process
-           :state (transition state input)
-           :history (commit-history history input))))
-
-(defn rewind [process atime]
-  (let [{:keys [transition history]} process]
-    (assoc process
-           :state (reduce transition
-                          (:start-state history)
-                          (subvec (:log history) 0 (inc atime)))
-           :history (assoc history :now atime))))
+           :state
+             (transition state input)
+           :log
+             (state-log/commit log input))))
 
 (defn halt [process]
   (assoc process :status :halted))
 
 (defn resume [process]
-  (let [history (:history process)
-        {:keys [log now]} history]
+  (let [log (:log process)]
     (assoc process
-           :status :running
-           :history (when (> now 0)
-            (assoc history
-                   :log
-                   (vec (subvec log 0 (inc now)))
-                   :now
-                   (inc now))))))
+           :status
+             :running
+           :log
+             (state-log/trim log))))
 
 (defn halted? [process]
   (= :halted (:status process)))

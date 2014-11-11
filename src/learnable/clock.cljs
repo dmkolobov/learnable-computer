@@ -44,7 +44,7 @@
     om/IRenderState
     (render-state [_ _] (dom/span nil))))
 
-(defn vclock [computer owner]
+(defn clock-component [computer owner]
   (reify
     om/IInitState
     (init-state [_]

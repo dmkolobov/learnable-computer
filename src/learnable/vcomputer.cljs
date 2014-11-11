@@ -3,7 +3,7 @@
             [learnable.clock :as clock]
             [learnable.process :as proc]
             [learnable.keyboard :as keyboard]
-            [learnable.history :as history]
+            [learnable.state-log :as state-log]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [cljs.core.async :as async :refer [chan put! <!]])
@@ -53,10 +53,6 @@
         (let [input (<! (om/get-state owner :input-queue))]
           (on-input computer input)
           (recur))))
-      (go (loop []
-        (let [atime (<! (om/get-state owner :control))]
-          (om/transact! computer :process (fn [p] (proc/rewind p atime)))
-          (recur))))
       (js/setTimeout
         (fn []
           (put! (om/get-state owner :interrupt) :resume))
@@ -66,7 +62,7 @@
     (render-state [_ {:keys [input-queue interrupt control]}]
 
       (dom/div nil
-        (om/build clock/vclock
+        (om/build clock/clock-component
                   computer
                   {:init-state {:input-queue input-queue}})
 
@@ -76,6 +72,5 @@
           (om/build display/vcomponent (get-frame computer)))
 
         (when (proc/halted? (:process computer))
-          (om/build history/vcomponent
-                    (:process computer)
-                    {:init-state {:control control}}))))))
+          (om/build state-log/log-component
+                    (:process computer)))))))
