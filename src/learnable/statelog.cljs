@@ -41,7 +41,7 @@
       (dom/a
         #js {:onClick (partial restore-snapshot! process atime)}
         (if (= atime 0)
-          "start-state"
+          "0 : start-state"
           (str atime " : " (entries (dec atime))))))))
 
 (defn log-component [process owner]
@@ -60,5 +60,5 @@
               (reduce (fn [timeline atime]
                         (cons (log-entry-component process atime) timeline))
                       (list (log-entry-component process 0))
-                      (range 1 (inc (count log)))))))))))
+                      (range 1 (inc (count (:entries log))))))))))))
 
