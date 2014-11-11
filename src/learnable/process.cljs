@@ -37,10 +37,13 @@
   (assoc process :status :halted))
 
 (defn resume [process]
-  (let [{:keys [log now]} (:history process)]
+  (let [history (:history process)
+        {:keys [log now]} history]
     (assoc process
            :status :running
-           :history (vec (subvec log 0 (inc now))))))
+           :history (assoc history
+                           :log
+                           (vec (subvec log 0 (inc now)))))))
 
 (defn halted? [process]
   (= :halted (:status process)))
