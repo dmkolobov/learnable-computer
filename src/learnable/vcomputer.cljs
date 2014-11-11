@@ -77,5 +77,5 @@
 
         (when (proc/halted? (:process computer))
           (om/build history/vcomponent
-                    (get-in computer [:process :history :log])
+                    (:process computer)
                     {:init-state {:control control}}))))))
