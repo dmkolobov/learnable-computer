@@ -71,6 +71,5 @@
                       :className "computer"}
           (om/build display/vcomponent (get-frame computer)))
 
-        (when (proc/halted? (:process computer))
-          (om/build statelog/log-component
-                    (:process computer)))))))
+        (om/build statelog/log-component
+                  (:process computer))))))
