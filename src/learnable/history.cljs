@@ -34,11 +34,10 @@
                     (let [entry (log atime)]
                       (cons
                         (dom/li
-                          nil
-                          (dom/a #js {:onClick (fn [e] (put! control atime))
-                                      :className (if (= atime now)
+                          {:className (if (= atime now)
                                                    "highlighted"
                                                    "")}
+                          (dom/a #js {:onClick (fn [e] (put! control atime))}
                                  (str atime " : " entry)))
                         timeline)))
                   (list)
