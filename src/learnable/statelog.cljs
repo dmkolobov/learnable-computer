@@ -65,7 +65,7 @@
               #js {:className "computer-history"}
               (map (fn [item]
                      (let [[atime label] item]
-                       (if (= :running (:status process))
+                       (if (= :halted (:status process))
                          (dom/li
                             #js {:on-click (partial restore-snapshot! process atime)}
                             (if (= (:now log) atime)
