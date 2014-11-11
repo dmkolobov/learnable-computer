@@ -67,10 +67,12 @@
                      (let [[atime label] item]
                        (if (= :halted (:status process))
                          (dom/li
-                            #js {:on-click (partial restore-snapshot! process atime)}
-                            (if (= (:now log) atime)
-                              (str "[X] - " atime " - " label)
-                              (str "[ ] - " atime " - " label)))
+                            nil
+                            (dom/a
+                              #js {:on-click (partial restore-snapshot! process atime)}
+                                  (if (= (:now log) atime)
+                                    (str "[X] - " atime " - " label)
+                                    (str "[ ] - " atime " - " label))))
                          (dom/li
                             nil
                             (str atime " - " label)))))
