@@ -69,7 +69,7 @@
                          (dom/li
                             nil
                             (dom/a
-                              #js {:on-click (partial restore-snapshot! process atime)}
+                              #js {:onClick (partial restore-snapshot! process atime)}
                                   (if (= (:now log) atime)
                                     (str "[X] - " atime " - " label)
                                     (str "[ ] - " atime " - " label))))
