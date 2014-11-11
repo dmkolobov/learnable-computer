@@ -3,7 +3,7 @@
             [learnable.clock :as clock]
             [learnable.process :as proc]
             [learnable.keyboard :as keyboard]
-            [learnable.state-log :as state-log]
+            [learnable.statelog :as statelog]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [cljs.core.async :as async :refer [chan put! <!]])
@@ -72,5 +72,5 @@
           (om/build display/vcomponent (get-frame computer)))
 
         (when (proc/halted? (:process computer))
-          (om/build state-log/log-component
+          (om/build statelog/log-component
                     (:process computer)))))))

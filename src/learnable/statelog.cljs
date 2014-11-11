@@ -1,4 +1,4 @@
-(ns learnable.statelog
+(ns learnable.state-log
   (:require [learnable.process :as proc]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]

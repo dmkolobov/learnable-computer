@@ -1,5 +1,5 @@
 (ns learnable.process
-  (:require [learnable.state-log :as state-log]))
+  (:require [learnable.statelog :as statelog]))
 
 (defn launch [program screen]
   (let [start-state ((:boot program) screen)
@@ -12,7 +12,7 @@
                              (fn [state _] (on-clock state))
                              on-keyboard)]
                      (t state input)))
-     :log (state-log/create start-state)}))
+     :log (statelog/create start-state)}))
 
 (defn transition [process input]
   (let [{:keys [transition state log]} process]
@@ -20,7 +20,7 @@
            :state
              (transition state input)
            :log
-             (state-log/commit log input))))
+             (statelog/commit log input))))
 
 (defn halt [process]
   (assoc process :status :halted))
@@ -31,7 +31,7 @@
            :status
              :running
            :log
-             (state-log/trim log))))
+             (statelog/trim log))))
 
 (defn halted? [process]
   (= :halted (:status process)))
