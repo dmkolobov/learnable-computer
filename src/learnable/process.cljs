@@ -1,5 +1,5 @@
 (ns learnable.process
-  (:require learnable.state-log :as state-log))
+  (:require [learnable.state-log :as state-log]))
 
 (defn launch [program screen]
   (let [start-state ((:boot program) screen)
