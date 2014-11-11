@@ -22,7 +22,7 @@
   (om/transact!
     process
     (fn [process]
-      (let [{:keys [transition log] process}]
+      (let [{:keys [transition log]} process]
         (assoc process
                :state
                  (reduce transition
