@@ -44,6 +44,13 @@
           "0 : start-state"
           (str atime " : " (entries (dec atime))))))))
 
+(defn log-list [log]
+  (let [{:keys entries} log]
+    (reduce (fn [timeline atime]
+              (cons [atime (entries atime)] timeline))
+            (list [0 "start"])
+            (range 1 (inc (count entries))))))
+
 (defn log-component [process owner]
   (reify
     om/IRender
@@ -56,8 +63,15 @@
             (apply
               dom/ul
               #js {:className "computer-history"}
-              (reduce (fn [timeline atime]
-                        (cons (log-entry-component process atime) timeline))
-                      (list (log-entry-component process 0))
-                      (range 1 (inc (count (:entries log)))))))))))
-
+              (map (fn [item]
+                     (let [[atime label] item]
+                       (if (= :running (:status process))
+                         (dom/li
+                            #js {:on-click (partial restore-snapshot! process atime)}
+                            (if (= (:now log) atime)
+                              (str "[X] - " atime " - " label)
+                              (str "[ ] - " atime " - " label)))
+                         (dom/li
+                            nil
+                            (str atime " - " label)))))
+                   (log-list log))))))))
