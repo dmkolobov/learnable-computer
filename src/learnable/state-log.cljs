@@ -59,6 +59,6 @@
               nil
               (reduce (fn [timeline atime]
                         (cons (log-entry-component process atime) timeline))
-                      (log-entry-component process 0)
+                      (list (log-entry-component process 0))
                       (range 1 (inc (count log)))))))))))
 
