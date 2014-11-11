@@ -40,7 +40,7 @@
   (let [{:keys [log now]} (:history process)]
     (assoc process
            :status :running
-           :history (subvec log 0 (inc now)))))
+           :history (vec (subvec log 0 (inc now))))))
 
 (defn halted? [process]
   (= :halted (:status process)))
