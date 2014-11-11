@@ -67,7 +67,7 @@
                      (let [[atime label] item]
                        (if (= :halted (:status process))
                          (dom/li
-                            nil
+                            {:key atime}
                             (dom/a
                               #js {:onClick (partial restore-snapshot! process atime)}
                                   (if (= (:now log) atime)
