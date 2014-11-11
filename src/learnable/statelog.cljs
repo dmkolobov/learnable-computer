@@ -53,12 +53,11 @@
           #js {:className "screen inspector"}
           (dom/div nil (str "now: " (:now log)))
           (dom/hr nil)
-          (when (= :halted (:status process))
             (apply
               dom/ul
               #js {:className "computer-history"}
               (reduce (fn [timeline atime]
                         (cons (log-entry-component process atime) timeline))
                       (list (log-entry-component process 0))
-                      (range 1 (inc (count (:entries log))))))))))))
+                      (range 1 (inc (count (:entries log)))))))))))
 
