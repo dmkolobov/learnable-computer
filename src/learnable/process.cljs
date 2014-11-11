@@ -41,9 +41,12 @@
         {:keys [log now]} history]
     (assoc process
            :status :running
-           :history (assoc history
-                           :log
-                           (vec (subvec log 0 (inc now)))))))
+           :history (when (> now 0)
+            (assoc history
+                   :log
+                   (vec (subvec log 0 (inc now)))
+                   :now
+                   (inc now))))))
 
 (defn halted? [process]
   (= :halted (:status process)))
